@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Ticket Generator and Lucknow Metro Map</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background : #ffa034;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .map-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #qrcode {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #downloadLink {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: white;
+            text-decoration: none;
+            background-color: #ffa034;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #downloadLink:hover {
+            background-color: #e68900;
+        }
+        #map {
+            height: 25vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book your Ticket Generator</h1>
+        <form id="ticketForm">
+            <label for="user">User Name:</label>
+            <input type="text" id="user" name="user" required>
+
+            <label for="from">From:</label>
+            <select id="from" name="from" required>
+                <option value="">Select Starting point</option>
+                <option>CCS AIRPORT</option>
+                <option> AMAUSI</option>
+                <option>TRANSPORT NAGAR</option>
+                <option>KRISHNA NAGAR</option>
+                <option>SINGAR NAGAR</option>
+                <option>ALAMBAGH</option>
+                <option>ALAMBAGH BUS STAND </option>
+                <option>MAWAIYA</option>
+                <option>DURAGAPURI</option>
+                <option>CHARBAGH</option>
+                <option>CHAUDHARY CHARANSINGH AIRPORT</option>
+                <option>HARZATGANJ</option>
+                <option>POLYTECHNIC</option>
+                <option>SACHIWALAYA</option>
+                <option>INDRANAGAR</option>
+            </select>
+
+            <label for="destination">Destination:</label>
+            <select id="destination" name="destination" required>
+                <option value="">Select Destination</option>
+                <option>CCS AIRPORT</option>
+                <option> AMAUSI</option>
+                <option>TRANSPORT NAGAR</option>
+                <option>KRISHNA NAGAR</option>
+                <option>SINGAR NAGAR</option>
+                <option>ALAMBAGH</option>
+                <option>ALAMBAGH BUS STAND </option>
+                <option>MAWAIYA</option>
+                <option>DURAGAPURI</option>
+                <option>CHARBAGH</option>
+                <option>CHAUDHARY CHARANSINGH AIRPORT</option>
+                <option>HARZATGANJ</option>
+                <option>POLYTECHNIC</option>
+                <option>SACHIWALAYA</option>
+                <option>INDRANAGAR</option>
+            </select>
+
+            <label for="dateTime">Date and Time:</label>
+            <input type="text" id="dateTime" name="dateTime" readonly>
+
+            <button type="button" onclick="generateTicket()">Generate Ticket</button>
+        </form>
+
+        <div id="qrcode"></div>
+        <a id="downloadLink" style="display:none;" download="ticket.png">Download Ticket</a>
+    </div>
+
+    <div class="map-container">
+        <h1>Lucknow Metro Map</h1>
+        <div id="map"></div>
+    </div>
+
+    <script>
+        // Automatically set date and time
+        document.getElementById('dateTime').value = new Date().toLocaleString();
+
+        function generateTicket() {
+            const user = document.getElementById('user').value;
+            const from = document.getElementById('from').value;
+            const destination = document.getElementById('destination').value;
+            const dateTime = document.getElementById('dateTime').value;
+
+            if (!user || !from || !destination) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            if (from === destination) {
+                alert('From and Destination cannot be the same.');
+                return;
+            }
+
+            const ticketData = {
+                user,
+                from,
+                destination,
+                dateTime
+            };
+
+            // Generate QR Code
+            const qrCodeContainer = document.getElementById('qrcode');
+            qrCodeContainer.innerHTML = '';
+            const qrCode = new QRCode(qrCodeContainer, {
+                text: JSON.stringify(ticketData),
+                width: 200,
+                height: 200
+            });
+
+            // Save QR code as image for download
+            setTimeout(() => {
+                const qrCanvas = qrCodeContainer.querySelector('canvas');
+                const qrImage = qrCanvas.toDataURL('image/png');
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = qrImage;
+                downloadLink.style.display = 'inline';
+            }, 500);
+
+            // Store ticket data in MySQL database
+            fetch('save_ticket.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ticketData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Ticket data saved successfully.');
+                } else {
+                    console.error('Failed to save ticket data:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving ticket data:', error);
+            });
+        }
+
+        // Initialize Leaflet map
+        const map = L.map('map').setView([26.8467, 80.9462], 13); // Lucknow coordinates
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add markers for Lucknow Metro stations
+        const stations = [
+            { name: "Charbagh", coords: [26.8230, 80.9231] },
+            { name: "Hazratganj", coords: [26.8546, 80.9461] },
+            { name: "Munshipulia", coords: [26.8748, 80.9816] },
+            { name: "Transport Nagar", coords: [26.7612, 80.8853] }
+        ];
+
+        stations.forEach(station => {
+            L.marker(station.coords).addTo(map).bindPopup(`<b>${station.name}</b>`);
+        });
+    </script>
+</body>
+</html>

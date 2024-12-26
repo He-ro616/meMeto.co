@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucknow Metro Fare Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            background-color: #ff9800;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ff9800;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ff9800;
+        }
+        h1,label {color:aliceblue;
+            text-align: center;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            color: #0c0801;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: #fff3f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Fare Calculator</h1>
+        <label for="start-station">Starting Station:</label>
+        <select id="start-station">
+            <option value="" disabled selected>Select a station</option>
+        </select>
+        
+        <label for="end-station">Destination Station:</label>
+        <select id="end-station">
+            <option value="" disabled selected>Select a station</option>
+        </select>
+        
+        <button onclick="calculateFare()">Calculate Fare</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // List of stations
+        const stations = [
+            "Charbagh", "Hussainganj", "Sachivalaya", "Hazratganj",
+            "KD Singh Babu Stadium", "Vishwavidyalaya", "IT College",
+            "Mahanagar", "Badshah Nagar", "Polytechnic", "Indira Nagar",
+            "Munshipulia"
+        ];
+
+        // Fare chart
+        const fareChart = { 5: 10, 10: 20, Infinity: 30 };
+
+        // Populate station dropdowns
+        const startStationSelect = document.getElementById("start-station");
+        const endStationSelect = document.getElementById("end-station");
+
+        stations.forEach(station => {
+            const option1 = document.createElement("option");
+            const option2 = document.createElement("option");
+            option1.value = station;
+            option1.textContent = station;
+            option2.value = station;
+            option2.textContent = station;
+            startStationSelect.appendChild(option1);
+            endStationSelect.appendChild(option2);
+        });
+
+        // Calculate fare
+        function calculateFare() {
+            const startStation = startStationSelect.value;
+            const endStation = endStationSelect.value;
+
+            if (!startStation || !endStation) {
+                document.getElementById("result").textContent = "Please select both stations.";
+                return;
+            }
+
+            const startIndex = stations.indexOf(startStation);
+            const endIndex = stations.indexOf(endStation);
+            const stationsTraveled = Math.abs(endIndex - startIndex);
+
+            let fare = 0;
+            for (const limit in fareChart) {
+                if (stationsTraveled <= limit) {
+                    fare = fareChart[limit];
+                    break;
+                }
+            }
+
+            document.getElementById("result").textContent = `Total fare: ₹${fare}`;
+        }
+    </script>
+</body>
+</html>

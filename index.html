@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>meMeto.com</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffa034;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color:#ffa034;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1.1rem;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+        }
+        .product-card {
+            border: 1px solid #ffa034;
+            border-radius: 5px;
+            padding: 1rem;
+            text-align: center;
+            background: #f9f9f9;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: 100px;
+            margin-bottom: 1rem;
+        }
+        #map {
+            height: 25vh;
+            width: 100%;
+        }
+        footer {
+            background-color:#ffa034;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffa034;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .cookie-banner .message {
+            font-size: 1rem;
+            margin-right: 20px;
+            flex: 1;
+        }
+        .cookie-banner .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .cookie-banner button {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .cookie-banner .accept {
+            background-color: #00c853;
+            color: white;
+        }
+        .cookie-banner .accept:hover {
+            background-color: #009624;
+        }
+        .cookie-banner .decline {
+            background-color: #f44336;
+            color: white;
+        }
+        .cookie-banner .decline:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to meMETO </h1>
+        <p>Your one-stop web for everything!</p>
+    </header>
+    <nav>
+        <a href="newindex.html">Home</a>
+        <a href="#">MODES OF TRAVEL</a>
+        <a href="about us.html">About Us</a>
+        <a href="CONTACTUS.HTML">Contact</a>
+    </nav>
+    <main>
+        <section class="products">
+            <div class="product-card">
+                
+                <a href="ticketbooking.html"><img src="https://i.imghippo.com/files/roX2399HE.jpg" alt="" border="0"></a>
+            </div>
+            <div class="product-card">
+                
+                <a href="https://www.lmrcl.com/passengerinfo/fare-information/"><img src="https://i.imghippo.com/files/iN5904Rw.png" alt="" border="0"></a>
+            </div>
+            <div class="product-card">
+                <a href="history.html"> <img src="https://i.imghippo.com/files/bI4294Fg.png" alt="" border="0"></a>
+            </div>
+            <div class="product-card">
+                <a href="ARRIVALDEPARTURE.html"><img src="https://i.imghippo.com/files/uFVE8453ch.png" alt="" border="0"></a>
+            </div>
+        </section>
+    </main>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map and set its view to Lucknow
+        const map = L.map('map').setView([26.8467, 80.9462], 13); // Latitude, Longitude, Zoom Level
+
+        // Add a tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add a marker at the center of Lucknow
+        L.marker([26.8467, 80.9462]).addTo(map)
+            .bindPopup('Lucknow Center')
+            .openPopup();
+    </script>
+    <footer>
+        <p>&copy; 2024 meMETO. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Lucknow Metro Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background-color: #ff9800;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ff9800;
+        }
+        h1 {
+            color: aliceblue;
+            text-align: center;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            color: #0c0801;
+        }
+        .schedule-table {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .time {
+            font-size: 18px;
+        }
+        .station-name {
+            font-weight: bold;
+        }
+        .star {
+            color: gold;
+        }
+        .next-train {
+            margin-top: 20px;
+            font-weight: bold;
+            color: rgb(241, 241, 241);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Lucknow Metro Schedule</h1>
+
+        <!-- Dropdown to select a station -->
+        <label for="station">Select a Station:</label>
+        <select id="station">
+            <option value="">Select a Station</option>
+            <option value="0">CCS Airport</option>
+            <option value="1">Amausi</option>
+            <option value="2">Transport Nagar</option>
+            <option value="3">Krishna Nagar</option>
+            <option value="4">Singar Nagar</option>
+            <option value="5">Alambagh</option>
+            <option value="6">Alambagh Bus Stand</option>
+            <option value="7">Mawaiya</option>
+            <option value="8">Durgapuri</option>
+            <option value="9">Charbagh</option>
+            <option value="10">Hussainganj</option>
+            <option value="11">Sachivalya</option>
+            <option value="12">Hazratganj</option>
+            <option value="13">KD Singh Babu Stadium</option>
+            <option value="14">Lucknow University</option>
+            <option value="15">IT College</option>
+            <option value="16">Mahanagar</option>
+            <option value="17">Badshah Nagar</option>
+            <option value="18">Lekhraj Market</option>
+            <option value="19">Bhootnath Market</option>
+            <option value="20">Indra Nagar</option>
+            <option value="21">Munsipulia</option>
+        </select><br>
+
+        <!-- Button to show the schedule -->
+        <button id="show-schedule">Show Schedule</button>
+
+        <!-- Display the schedule -->
+        <div class="schedule-table" id="schedule"></div>
+
+        <!-- Display next train time -->
+        <div class="next-train" id="next-train"></div>
+    </div>
+
+    <script>
+        // List of Lucknow Metro Stations
+        const stations = [
+            "CCS Airport", "Amausi", "Transport Nagar", "Krishna Nagar", "Singar Nagar", 
+            "Alambagh", "Alambagh Bus Stand", "Mawaiya", "Durgapuri", "Charbagh", 
+            "Hussainganj", "Sachivalya", "Hazratganj", "KD Singh Babu Stadium", 
+            "Lucknow University", "IT College", "Mahanagar", "Badshah Nagar", 
+            "Lekhraj Market", "Bhootnath Market", "Indra Nagar", "Munsipulia"
+        ];
+
+        // Generate schedule for the selected station
+        function generateSchedule(stationIndex) {
+            const startTime = 6 * 60; // 6:00 AM in minutes
+            const endTime = 22 * 60; // 10:00 PM in minutes
+
+            let scheduleHtml = '';
+            let currentTime = startTime;
+            let metroSerial = 1243; // Starting metro serial number
+
+            // Generate 2 train departure times for the selected station
+            for (let i = 0; i < 2; i++) {
+                let hours = Math.floor(currentTime / 60);
+                let minutes = currentTime % 60;
+                let timeString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+                // scheduleHtml += `<p class="time">${timeString} - Metro No: <span class="station-name">${metroSerial}</span></p>`;
+
+                // Increment metro serial and add a random 5-10 minute interval
+                metroSerial++;
+                let interval = Math.floor(Math.random() * 6) + 5; // Random interval between 5 and 10 minutes
+                currentTime += interval;
+            }
+
+            // Display the schedule for the selected station
+            const stationName = stations[stationIndex];
+            document.getElementById('schedule').innerHTML = `<h2>${stationName}</h2>${scheduleHtml}`;
+
+            // Display the next train time
+            const currentTimeInMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+            let nextTrainTime = startTime;
+
+            while (nextTrainTime <= currentTimeInMinutes) {
+                let interval = Math.floor(Math.random() * 6) + 5;
+                nextTrainTime += interval;
+            }
+
+            let hours = Math.floor(nextTrainTime / 60);
+            let minutes = nextTrainTime % 60;
+            let nextTrainString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+            document.getElementById('next-train').innerHTML = `Next train at ${nextTrainString} form ${stationName}`;
+        }
+
+        // Handle the 'Show Schedule' button click
+        document.getElementById('show-schedule').addEventListener('click', function() {
+            const stationIndex = parseInt(document.getElementById('station').value);
+
+            // Validate the selected station
+            if (isNaN(stationIndex)) {
+                alert("Please select a station.");
+                return;
+            }
+
+            generateSchedule(stationIndex);
+        });
+    </script>
+
+</body>
+</html>

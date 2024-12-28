@@ -14,18 +14,10 @@
             padding: 0;
             background-color: white;
         }
-        .container {
+        .container, .map-container {
             max-width: 600px;
-            margin: 50px auto;
-            background : #ffa034;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .map-container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: rgba(255, 255, 255, 0.1);
+            margin: 20px auto;
+            background: #ffa034;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -60,12 +52,20 @@
         button:hover {
             background-color: #45a049;
         }
+        .details-container {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
         #qrcode {
             margin-top: 20px;
             text-align: center;
         }
         #downloadLink {
-            display: block;
+            display: none;
             text-align: center;
             margin-top: 10px;
             color: white;
@@ -78,29 +78,32 @@
         #downloadLink:hover {
             background-color: #e68900;
         }
+        .map-container {
+            margin-top: 20px;
+        }
         #map {
-            height: 25vh;
+            height: 30vh;
             width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Book your Ticket Generator</h1>
+        <h1>Book Your Ticket</h1>
         <form id="ticketForm">
             <label for="user">User Name:</label>
             <input type="text" id="user" name="user" required>
 
             <label for="from">From:</label>
             <select id="from" name="from" required>
-                <option value="">Select Starting point</option>
+                <option value="">Select Starting Point</option>
                 <option>CCS AIRPORT</option>
-                <option> AMAUSI</option>
+                <option>AMAUSI</option>
                 <option>TRANSPORT NAGAR</option>
                 <option>KRISHNA NAGAR</option>
                 <option>SINGAR NAGAR</option>
                 <option>ALAMBAGH</option>
-                <option>ALAMBAGH BUS STAND </option>
+                <option>ALAMBAGH BUS STAND</option>
                 <option>MAWAIYA</option>
                 <option>DURAGAPURI</option>
                 <option>CHARBAGH</option>
@@ -109,18 +112,19 @@
                 <option>POLYTECHNIC</option>
                 <option>SACHIWALAYA</option>
                 <option>INDRANAGAR</option>
+                <option>MUNSIPULIYA</option>
             </select>
 
             <label for="destination">Destination:</label>
             <select id="destination" name="destination" required>
                 <option value="">Select Destination</option>
                 <option>CCS AIRPORT</option>
-                <option> AMAUSI</option>
+                <option>AMAUSI</option>
                 <option>TRANSPORT NAGAR</option>
                 <option>KRISHNA NAGAR</option>
                 <option>SINGAR NAGAR</option>
                 <option>ALAMBAGH</option>
-                <option>ALAMBAGH BUS STAND </option>
+                <option>ALAMBAGH BUS STAND</option>
                 <option>MAWAIYA</option>
                 <option>DURAGAPURI</option>
                 <option>CHARBAGH</option>
@@ -129,6 +133,7 @@
                 <option>POLYTECHNIC</option>
                 <option>SACHIWALAYA</option>
                 <option>INDRANAGAR</option>
+                 <option>MUNSIPULIYA</option>
             </select>
 
             <label for="dateTime">Date and Time:</label>
@@ -137,13 +142,16 @@
             <button type="button" onclick="generateTicket()">Generate Ticket</button>
         </form>
 
-        <div id="qrcode"></div>
-        <a id="downloadLink" style="display:none;" download="ticket.png">Download Ticket</a>
-    </div>
+        <div class="details-container" id="ticketDetails" style="display: none;">
+            <h2>Passenger Details</h2>
+            <p><strong>User Name:</strong> <span id="detailUser"></span></p>
+            <p><strong>From:</strong> <span id="detailFrom"></span></p>
+            <p><strong>To:</strong> <span id="detailDestination"></span></p>
+            <p><strong>Date and Time:</strong> <span id="detailDateTime"></span></p>
+        </div>
 
-    <div class="map-container">
-        <h1>Lucknow Metro Map</h1>
-        <div id="map"></div>
+        <div id="qrcode"></div>
+        <a id="downloadLink" download="ticket.png">Download Ticket</a>
     </div>
 
     <script>
@@ -165,14 +173,15 @@
                 return;
             }
 
-            const ticketData = {
-                user,
-                from,
-                destination,
-                dateTime
-            };
+            // Display passenger details
+            document.getElementById('detailUser').innerText = user;
+            document.getElementById('detailFrom').innerText = from;
+            document.getElementById('detailDestination').innerText = destination;
+            document.getElementById('detailDateTime').innerText = dateTime;
+            document.getElementById('ticketDetails').style.display = 'block';
 
             // Generate QR Code
+            const ticketData = { user, from, destination, dateTime };
             const qrCodeContainer = document.getElementById('qrcode');
             qrCodeContainer.innerHTML = '';
             const qrCode = new QRCode(qrCodeContainer, {
@@ -181,56 +190,40 @@
                 height: 200
             });
 
-            // Save QR code as image for download
+            // Wait for QR Code to render and combine it with passenger details
             setTimeout(() => {
                 const qrCanvas = qrCodeContainer.querySelector('canvas');
                 const qrImage = qrCanvas.toDataURL('image/png');
-                const downloadLink = document.getElementById('downloadLink');
-                downloadLink.href = qrImage;
-                downloadLink.style.display = 'inline';
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 400;
+                canvas.height = 500;
+
+                // Draw details
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = "black";
+                ctx.font = "16px Arial";
+                ctx.fillText(`User Name: ${user}`, 20, 40);
+                ctx.fillText(`From: ${from}`, 20, 70);
+                ctx.fillText(`To: ${destination}`, 20, 100);
+                ctx.fillText(`Date and Time: ${dateTime}`, 20, 130);
+
+                // Draw QR Code
+                const qrImg = new Image();
+                qrImg.onload = () => {
+                    ctx.drawImage(qrImg, 100, 150, 200, 200);
+
+                    // Create downloadable link
+                    const downloadLink = document.getElementById('downloadLink');
+                    downloadLink.href = canvas.toDataURL('image/png');
+                    downloadLink.style.display = 'block';
+                };
+                qrImg.src = qrImage;
             }, 500);
-
-            // Store ticket data in MySQL database
-            fetch('save_ticket.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(ticketData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Ticket data saved successfully.');
-                } else {
-                    console.error('Failed to save ticket data:', data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error saving ticket data:', error);
-            });
         }
-
-        // Initialize Leaflet map
-        const map = L.map('map').setView([26.8467, 80.9462], 13); // Lucknow coordinates
-
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        // Add markers for Lucknow Metro stations
-        const stations = [
-            { name: "Charbagh", coords: [26.8230, 80.9231] },
-            { name: "Hazratganj", coords: [26.8546, 80.9461] },
-            { name: "Munshipulia", coords: [26.8748, 80.9816] },
-            { name: "Transport Nagar", coords: [26.7612, 80.8853] }
-        ];
-
-        stations.forEach(station => {
-            L.marker(station.coords).addTo(map).bindPopup(`<b>${station.name}</b>`);
-        });
     </script>
 </body>
 </html>

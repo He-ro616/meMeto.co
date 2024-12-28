@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucknow Metro Fare Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            background-color: #ff9800;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ff9800;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ff9800;
+        }
+        h1, label {
+            color: aliceblue;
+            text-align: center;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            color: #0c0801;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: #fff6f6;
+        }    
+        #map {
+            height: 400px;  /* Increase map height */
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Fare Calculator</h1>
+        <label for="from">Select Starting Point (From):</label>
+        <select id="from">
+            <option value="">Select Starting Point</option>
+            <option value="0">CCS Airport</option>
+            <option value="1">Amausi</option>
+            <option value="2">Transport Nagar</option>
+            <option value="3">Krishna Nagar</option>
+            <option value="4">Singar Nagar</option>
+            <option value="5">Alambagh</option>
+            <option value="6">Alambagh Bus Stand</option>
+            <option value="7">Mawaiya</option>
+            <option value="8">Durgapuri</option>
+            <option value="9">Charbagh</option>
+            <option value="10">Hussainganj</option>
+            <option value="11">Sachivalya</option>
+            <option value="12">Hazratganj</option>
+            <option value="13">KD Singh Babu Stadium</option>
+            <option value="14">Lucknow University</option>
+            <option value="15">IT College</option>
+            <option value="16">Mahanagar</option>
+            <option value="17">Badshah Nagar</option>
+            <option value="18">Lekhraj Market</option>
+            <option value="19">Bhootnath Market</option>
+            <option value="20">Indra Nagar</option>
+            <option value="21">Munsipulia</option>
+        </select><br>
+
+        <label for="to">Select Destination (To):</label>
+        <select id="to">
+            <option value="">Select Destination</option>
+            <option value="0">CCS Airport</option>
+            <option value="1">Amausi</option>
+            <option value="2">Transport Nagar</option>
+            <option value="3">Krishna Nagar</option>
+            <option value="4">Singar Nagar</option>
+            <option value="5">Alambagh</option>
+            <option value="6">Alambagh Bus Stand</option>
+            <option value="7">Mawaiya</option>
+            <option value="8">Durgapuri</option>
+            <option value="9">Charbagh</option>
+            <option value="10">Hussainganj</option>
+            <option value="11">Sachivalya</option>
+            <option value="12">Hazratganj</option>
+            <option value="13">KD Singh Babu Stadium</option>
+            <option value="14">Lucknow University</option>
+            <option value="15">IT College</option>
+            <option value="16">Mahanagar</option>
+            <option value="17">Badshah Nagar</option>
+            <option value="18">Lekhraj Market</option>
+            <option value="19">Bhootnath Market</option>
+            <option value="20">Indra Nagar</option>
+            <option value="21">Munsipulia</option>
+        </select><br>
+
+        <button id="calculate">Calculate Fare</button>
+        <p id="result"></p>
+    </div>
+
+    <div class="map-container">
+        <h1>Lucknow Metro Map</h1>
+        <div id="map"></div>
+    </div>
+
+    <script>
+        document.getElementById('calculate').addEventListener('click', function() {
+            const fromIndex = parseInt(document.getElementById('from').value);
+            const toIndex = parseInt(document.getElementById('to').value);
+
+            // Check if both starting and destination points are selected
+            if (isNaN(fromIndex) || isNaN(toIndex) || fromIndex === toIndex) {
+                document.getElementById("result").textContent = "Please select different stations.";
+                return;
+            }
+
+            // Calculate the distance
+            const distance = Math.abs(toIndex - fromIndex);
+            let fare;
+
+            // Set fare based on distance
+            if (distance >= 1 && distance <= 2) {
+                fare = 10;
+            } else if (distance >= 3 && distance <= 5) {
+                fare = 20;
+            } else if (distance >= 6 && distance <= 8) {
+                fare = 30;
+            } else if (distance >= 9 && distance <= 11) {
+                fare = 40;
+            } else if (distance >= 12 && distance <= 18) {
+                fare = 50;
+            } else {
+                fare = "Invalid distance";
+            }
+
+            // Display result
+            document.getElementById('result').innerText = `Distance: ${distance} stations, Fare: ₹${fare}`;
+        });
+
+        
+    </script>
+
+</body>
+</html>

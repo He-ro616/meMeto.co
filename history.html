@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel History | Lucknow Metro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #ff9800;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .search-box {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-box input {
+            padding: 10px;
+            width: 250px;
+            font-size: 16px;
+        }
+        .search-box button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .search-box button:hover {
+            background-color: #e68900;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .history-table th {
+            background-color: #ff9800;
+            color: white;
+        }
+        .history-table td {
+            background-color: white;
+        }
+        .back-button {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .back-button:hover {
+            background-color: #e68900;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Your Travel History - Lucknow Metro</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="container">
+
+        <!-- Search Box Section -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by Station or Date...">
+            <button onclick="searchHistory()">Search</button>
+        </div>
+
+        <!-- Travel History Table -->
+        <table class="history-table" id="historyTable">
+            <thead>
+                <tr>
+                    <th>Metro No.</th>
+                    <th>From Station</th>
+                    <th>To Station</th>
+                    <th>Travel Date</th>
+                    <th>Fare (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody">
+                <!-- Travel history rows will be populated here by JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Back Button -->
+        <button class="back-button" onclick="window.history.back()">Back to Main Page</button>
+
+    </div>
+
+    <script>
+        // Sample travel history data
+        const travelHistory = [
+            { metroNo: "1243", from: "CCS Airport", to: "Amausi", date: "2024-01-10", fare: 20 },
+            { metroNo: "1244", from: "Transport Nagar", to: "Krishna Nagar", date: "2024-01-11", fare: 30 },
+            { metroNo: "1245", from: "Alambagh", to: "Hazratganj", date: "2024-01-12", fare: 40 },
+            { metroNo: "1246", from: "Mawaiya", to: "Charbagh", date: "2024-01-13", fare: 20 },
+            { metroNo: "1247", from: "Sachivalya", to: "Lucknow University", date: "2024-01-14", fare: 30 },
+            { metroNo: "1248", from: "Indra Nagar", to: "Munsipulia", date: "2024-01-15", fare: 25 },
+        ];
+
+        // Function to populate the travel history table
+        function loadHistory() {
+            const historyBody = document.getElementById('historyBody');
+            historyBody.innerHTML = ""; // Clear existing rows
+
+            // Loop through the travel history and display rows
+            travelHistory.forEach(trip => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${trip.metroNo}</td>
+                    <td>${trip.from}</td>
+                    <td>${trip.to}</td>
+                    <td>${trip.date}</td>
+                    <td>₹${trip.fare}</td>
+                `;
+                historyBody.appendChild(row);
+            });
+        }
+
+        // Function to search history by station or date
+        function searchHistory() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredHistory = travelHistory.filter(trip => {
+                return trip.from.toLowerCase().includes(searchTerm) ||
+                    trip.to.toLowerCase().includes(searchTerm) ||
+                    trip.date.includes(searchTerm);
+            });
+
+            const historyBody = document.getElementById('historyBody');
+            historyBody.innerHTML = ""; // Clear existing rows
+
+            // Display filtered rows
+            filteredHistory.forEach(trip => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${trip.metroNo}</td>
+                    <td>${trip.from}</td>
+                    <td>${trip.to}</td>
+                    <td>${trip.date}</td>
+                    <td>₹${trip.fare}</td>
+                `;
+                historyBody.appendChild(row);
+            });
+        }
+
+        // Initialize by loading all history
+        loadHistory();
+    </script>
+
+</body>
+</html>

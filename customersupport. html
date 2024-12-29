@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color:orange;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .support-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .support-container h1 {
+            color: #333;
+        }
+        .support-container p {
+            font-size: 18px;
+            margin: 10px 0;
+            color: orange;
+        }
+        .support-container a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .support-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="support-container">
+        <h1>Customer Support</h1>
+        <p>Phone: <a href="tel:+91 7880678997">+91 7880678997</a></p>
+        <p>Email: <a href="mailto: memetoo. co@gmail.com">memetoo.co@gmail.com</a></p>
+    </div>
+</body>
+</html>

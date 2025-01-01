@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> TICKET BOOKING </title>
+    <title>Lucknow Metro Ticket Booking</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -22,7 +22,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+        h1, h2 {
             text-align: center;
         }
         form {
@@ -32,7 +32,7 @@
             display: block;
             margin-bottom: 5px;
         }
-        select, input {
+        select, input, button {
             margin-bottom: 10px;
             padding: 10px;
             width: 100%;
@@ -41,13 +41,9 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         button {
-            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            width: 100%;
         }
         button:hover {
             background-color: #45a049;
@@ -89,7 +85,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Book Your Ticket</h1>
+        <h1>Lucknow Metro Ticket Booking</h1>
         <form id="ticketForm">
             <label for="user">User Name:</label>
             <input type="text" id="user" name="user" required>
@@ -97,43 +93,55 @@
             <label for="from">From:</label>
             <select id="from" name="from" required>
                 <option value="">Select Starting Point</option>
-                <option>CCS AIRPORT</option>
-                <option>AMAUSI</option>
-                <option>TRANSPORT NAGAR</option>
-                <option>KRISHNA NAGAR</option>
-                <option>SINGAR NAGAR</option>
-                <option>ALAMBAGH</option>
-                <option>ALAMBAGH BUS STAND</option>
-                <option>MAWAIYA</option>
-                <option>DURAGAPURI</option>
-                <option>CHARBAGH</option>
-                <option>CHAUDHARY CHARANSINGH AIRPORT</option>
-                <option>HARZATGANJ</option>
-                <option>POLYTECHNIC</option>
-                <option>SACHIWALAYA</option>
-                <option>INDRANAGAR</option>
-                <option>MUNSIPULIYA</option>
+                <option value="0">CCS Airport</option>
+                <option value="1">Amausi</option>
+                <option value="2">Transport Nagar</option>
+                <option value="3">Krishna Nagar</option>
+                <option value="4">Singar Nagar</option>
+                <option value="5">Alambagh</option>
+                <option value="6">Alambagh Bus Stand</option>
+                <option value="7">Mawaiya</option>
+                <option value="8">Durgapuri</option>
+                <option value="9">Charbagh</option>
+                <option value="10">Hussainganj</option>
+                <option value="11">Sachivalya</option>
+                <option value="12">Hazratganj</option>
+                <option value="13">KD Singh Babu Stadium</option>
+                <option value="14">Lucknow University</option>
+                <option value="15">IT College</option>
+                <option value="16">Mahanagar</option>
+                <option value="17">Badshah Nagar</option>
+                <option value="18">Lekhraj Market</option>
+                <option value="19">Bhootnath Market</option>
+                <option value="20">Indra Nagar</option>
+                <option value="21">Munsipulia</option>
             </select>
 
-            <label for="destination">Destination:</label>
+            <label for="destination">To:</label>
             <select id="destination" name="destination" required>
                 <option value="">Select Destination</option>
-                <option>CCS AIRPORT</option>
-                <option>AMAUSI</option>
-                <option>TRANSPORT NAGAR</option>
-                <option>KRISHNA NAGAR</option>
-                <option>SINGAR NAGAR</option>
-                <option>ALAMBAGH</option>
-                <option>ALAMBAGH BUS STAND</option>
-                <option>MAWAIYA</option>
-                <option>DURAGAPURI</option>
-                <option>CHARBAGH</option>
-                <option>CHAUDHARY CHARANSINGH AIRPORT</option>
-                <option>HARZATGANJ</option>
-                <option>POLYTECHNIC</option>
-                <option>SACHIWALAYA</option>
-                <option>INDRANAGAR</option>
-                 <option>MUNSIPULIYA</option>
+                <option value="0">CCS Airport</option>
+                <option value="1">Amausi</option>
+                <option value="2">Transport Nagar</option>
+                <option value="3">Krishna Nagar</option>
+                <option value="4">Singar Nagar</option>
+                <option value="5">Alambagh</option>
+                <option value="6">Alambagh Bus Stand</option>
+                <option value="7">Mawaiya</option>
+                <option value="8">Durgapuri</option>
+                <option value="9">Charbagh</option>
+                <option value="10">Hussainganj</option>
+                <option value="11">Sachivalya</option>
+                <option value="12">Hazratganj</option>
+                <option value="13">KD Singh Babu Stadium</option>
+                <option value="14">Lucknow University</option>
+                <option value="15">IT College</option>
+                <option value="16">Mahanagar</option>
+                <option value="17">Badshah Nagar</option>
+                <option value="18">Lekhraj Market</option>
+                <option value="19">Bhootnath Market</option>
+                <option value="20">Indra Nagar</option>
+                <option value="21">Munsipulia</option>
             </select>
 
             <label for="dateTime">Date and Time:</label>
@@ -148,6 +156,7 @@
             <p><strong>From:</strong> <span id="detailFrom"></span></p>
             <p><strong>To:</strong> <span id="detailDestination"></span></p>
             <p><strong>Date and Time:</strong> <span id="detailDateTime"></span></p>
+            <p><strong>Fare:</strong> ₹<span id="detailFare"></span></p>
         </div>
 
         <div id="qrcode"></div>
@@ -155,33 +164,50 @@
     </div>
 
     <script>
-        // Automatically set date and time
         document.getElementById('dateTime').value = new Date().toLocaleString();
 
         function generateTicket() {
             const user = document.getElementById('user').value;
-            const from = document.getElementById('from').value;
-            const destination = document.getElementById('destination').value;
+            const fromIndex = parseInt(document.getElementById('from').value);
+            const toIndex = parseInt(document.getElementById('destination').value);
             const dateTime = document.getElementById('dateTime').value;
 
-            if (!user || !from || !destination) {
+            if (!user || isNaN(fromIndex) || isNaN(toIndex)) {
                 alert('Please fill in all fields.');
                 return;
             }
-            if (from === destination) {
+
+            if (fromIndex === toIndex) {
                 alert('From and Destination cannot be the same.');
                 return;
             }
 
+            // Calculate fare
+            const distance = Math.abs(toIndex - fromIndex);
+            let fare;
+
+            if (distance <= 2) {
+                fare = 10;
+            } else if (distance <= 5) {
+                fare = 20;
+            } else if (distance <= 8) {
+                fare = 30;
+            } else if (distance <= 11) {
+                fare = 40;
+            } else {
+                fare = 50;
+            }
+
             // Display passenger details
             document.getElementById('detailUser').innerText = user;
-            document.getElementById('detailFrom').innerText = from;
-            document.getElementById('detailDestination').innerText = destination;
+            document.getElementById('detailFrom').innerText = document.getElementById('from').options[fromIndex].text;
+            document.getElementById('detailDestination').innerText = document.getElementById('destination').options[toIndex].text;
             document.getElementById('detailDateTime').innerText = dateTime;
+            document.getElementById('detailFare').innerText = fare;
             document.getElementById('ticketDetails').style.display = 'block';
 
             // Generate QR Code
-            const ticketData = { user, from, destination, dateTime };
+            const ticketData = { user, from: fromIndex, to: toIndex, dateTime, fare };
             const qrCodeContainer = document.getElementById('qrcode');
             qrCodeContainer.innerHTML = '';
             const qrCode = new QRCode(qrCodeContainer, {
@@ -190,7 +216,7 @@
                 height: 200
             });
 
-            // Wait for QR Code to render and combine it with passenger details
+            // Create downloadable ticket
             setTimeout(() => {
                 const qrCanvas = qrCodeContainer.querySelector('canvas');
                 const qrImage = qrCanvas.toDataURL('image/png');
@@ -200,23 +226,20 @@
                 canvas.width = 400;
                 canvas.height = 500;
 
-                // Draw details
-                ctx.fillStyle = "white";
+                ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = "black";
-                ctx.font = "16px Arial";
+                ctx.fillStyle = 'black';
+                ctx.font = '16px Arial';
                 ctx.fillText(`User Name: ${user}`, 20, 40);
-                ctx.fillText(`From: ${from}`, 20, 70);
-                ctx.fillText(`To: ${destination}`, 20, 100);
+                ctx.fillText(`From: ${document.getElementById('from').options[fromIndex].text}`, 20, 70);
+                ctx.fillText(`To: ${document.getElementById('destination').options[toIndex].text}`, 20, 100);
                 ctx.fillText(`Date and Time: ${dateTime}`, 20, 130);
+                ctx.fillText(`Fare: ₹${fare}`, 20, 160);
 
-                // Draw QR Code
                 const qrImg = new Image();
                 qrImg.onload = () => {
-                    ctx.drawImage(qrImg, 100, 150, 200, 200);
+                    ctx.drawImage(qrImg, 100, 200, 200, 200);
 
-                    // Create downloadable link
                     const downloadLink = document.getElementById('downloadLink');
                     downloadLink.href = canvas.toDataURL('image/png');
                     downloadLink.style.display = 'block';

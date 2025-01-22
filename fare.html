@@ -9,6 +9,72 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+         .sidebar {
+            width: 250px;
+            height: 100vh;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s, background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+            background-color: rgb(255, 254, 254); /* Opaque when toggled */
+        }
+
+        .sidebar a {
+            color: #ffa034;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #ffa034;
+            color:white;
+        }
+
+        .sidebar a.active {
+            background-color: #f5be80;
+            color:white;
+        }
+        .logo{
+            width: 100px;
+            height: auto;
+        }
+
+        .content {
+            margin-left: 0;
+            padding: 20px;
+            flex-grow: 0;
+            transition: margin-left 0.3s;
+        }
+
+        .content.shift {
+            margin-left: 250px;
+        }
+
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color:#ffa034;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 2000;
+        }
         .container {
             background-color: #ff9800;
             max-width: 400px;
@@ -42,6 +108,14 @@
     </style>
 </head>
 <body>
+      <div class="sidebar">
+        <br>
+        <br>
+        <a href="index.html" onclick="setActive(event)">Home</a>
+        <a href="whatsnew.html" onclick="setActive(event)">What's New?</a>
+        <a href="about us.html" onclick="setActive(event)">About Us</a>
+        <a href="CONTACTUS.HTML" onclick="setActive(event)">Contact Us</a>
+    </div>
     <div class="container">
         <h1>Fare Calculator</h1>
         <label for="from">Select Starting Point (From):</label>
@@ -108,6 +182,18 @@
     </div>
 
     <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+            sidebar.classList.toggle('open');
+            content.classList.toggle('shift');
+        }
+
+        function setActive(event) {
+            const links = document.querySelectorAll('.sidebar a');
+            links.forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+        }
         document.getElementById('calculate').addEventListener('click', function() {
             const fromIndex = parseInt(document.getElementById('from').value);
             const toIndex = parseInt(document.getElementById('to').value);
